@@ -164,10 +164,10 @@ Subscriptions - map of the following shape:
 * Use case: Lambda
 * Permissions: SNS_Subscriptions_Delete_Topic_Policy
 
-### Lambda_Manage_SNS_Subscriptions_Role
+### Lambda_Modify_SNS_Subscriptions_Role
 * Name: Lambda_Manage_SNS_Subscriptions_Role
-* Description: Allows lambda to access and modify SNS_Subscription items, which logically represent SNS subscriptions to a certain SNS topic
+* Description: Allows lambda to modify SNS_Subscription items, which logically represent SNS subscriptions to a certain SNS topic
 * Use case: Lambda
-* Permissions: SNS_Subscriptions_Get_Topic_Policy, SNS_Subscriptions_Update_Topic_Policy
+* Permissions: SNS_Subscriptions_Update_Topic_Policy
 
 

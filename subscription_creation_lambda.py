@@ -1,6 +1,7 @@
 import json
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
 
 allowedSubscriptionTypes = ['Email', 'SQS', 'Lambda', 'HTTP']
 tableAttributesMap = {
@@ -18,30 +19,19 @@ def lambda_handler(event, context):
     if subscriptionType not in allowedSubscriptionTypes:
         raise Exception({'errorMessage': 'Invalid subscription type!'})
     tableAttribute = tableAttributesMap[subscriptionType]
-    projectionExpression=f'topic,{tableAttribute}'
     
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('SNS_Subscriptions')
-    response = table.get_item(
-        Key={
-            'topic': topic
-        },
-        ProjectionExpression=projectionExpression
-    )
-    if 'Item' not in response:
-        raise Exception({'errorMessage': 'Topic does not exist!'})
-    item = response['Item']
-    attributeValues = item[tableAttribute]
-    if subscriberID in attributeValues:
-        return 'Subscription already exists'
-    count = len(attributeValues)
-    updateExpression = f'SET {tableAttribute}[{count}] = :insertValue'
-    return table.update_item(
-        Key={
-            'topic': topic
-        },
-        UpdateExpression=updateExpression,
-        ExpressionAttributeValues={
-            ':insertValue': subscriberID
-        }
-    )
+    updateExpression = f'ADD {tableAttribute} :elementSet'
+    try:
+        return table.update_item(
+           Key={'topic': topic},
+           UpdateExpression=updateExpression,
+           ExpressionAttributeValues={":elementSet":set([subscriberID])},
+           ConditionExpression=Key('topic').eq(topic)
+        )
+    except ClientError as e:
+        if e.response['Error']['Code'] == "ConditionalCheckFailedException":
+            raise Exception({'errorMessage': 'Topic does not exist!'})
+        else:
+            raise
