@@ -154,9 +154,9 @@ Subscriptions - map of the following shape:
 
 ### Lambda_Add_SNS_Topic_Role
 * Name: Lambda_Add_SNS_Topic_Role
-* Description: Allows Lambda to add an item to the SNS_Subscriptions table, which logically would represent a new SNS topic, and query existing items (in order to see if topic name is already taken)
+* Description: Allows Lambda to add an item to the SNS_Subscriptions table, which logically would represent a new SNS topic
 * Use case: Lambda
-* Permissions: SNS_Subscriptions_Add_Topic_Policy, SNS_Subscriptions_Query_Topics_Policy
+* Permissions: SNS_Subscriptions_Add_Topic_Policy
 
 ### Lambda_Delete_SNS_Topic_Role
 * Name: Lambda_Delete_SNS_Topic_Role
