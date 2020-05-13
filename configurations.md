@@ -70,7 +70,11 @@ Subscriptions - map of the following shape:
 * Role name: Lambda_Send_SQS_Message_Role
 * Code: send_sqs_message_lambda.py
 
+### SNSInvokeLambdas function
 
+* Runtime: Python 3.8
+* Role name: Lambda_Invoke_Lambda_Role
+* Code: [invoke_lambdas_lambda.py](invoke_lambdas_lambda.py)
 
 ## Policies
 
@@ -212,6 +216,27 @@ Subscriptions - map of the following shape:
 }
 ```
 
+### Lambda_Invoke_Policy
+* Name: Lambda_Invoke_Policy
+* Description: Allows principal to invoke lambdas
+* Service: Lambda
+* Action: InvokeFunction
+* Resources: All resources
+* JSON:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "lambda:InvokeFunction",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ## Roles
 
 ### Lambda_Add_SNS_Topic_Role
@@ -249,6 +274,12 @@ Subscriptions - map of the following shape:
 * Description: Allows lambda to send SQS messages
 * Use case: Lambda
 * Permissions: SQS_Send_Message_Policy
+
+### Lambda_Invoke_Lambda_Role
+* Name: Lambda_Invoke_Lambda_Role
+* Description: Allows lambda to invoke lambdas
+* Use case: Lambda
+* Permissions: Lambda_Invoke_Policy
 
 
 
