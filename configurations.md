@@ -64,6 +64,14 @@ Subscriptions - map of the following shape:
     * SENDER_ACCESS_KEY
     * SENDER_SECRET_ACCESS_KEY
 
+### SNSSendSQSMessage function
+
+* Runtime: Python 3.8
+* Role name: Lambda_Send_SQS_Message_Role
+* Code: send_sqs_message_lambda.py
+
+
+
 ## Policies
 
 ### SNS_Subscriptions_Add_Topic_Policy
@@ -183,6 +191,27 @@ Subscriptions - map of the following shape:
 }
 ```
 
+### SQS_Send_Message_Policy
+* Name: SQS_Send_Message_Policy
+* Description: Allows principal to send SQS messages
+* Service: SQS
+* Action: SendMessage
+* Resources: All resources
+* JSON:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sqs:SendMessage",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ## Roles
 
 ### Lambda_Add_SNS_Topic_Role
@@ -214,6 +243,12 @@ Subscriptions - map of the following shape:
 * Description: Allows lambda to send emails
 * Use case: Lambda
 * Permissions: SES_Send_Emails_Policy
+
+### Lambda_Send_SQS_Message_Role
+* Name: Lambda_Send_SQS_Message_Role
+* Description: Allows lambda to send SQS messages
+* Use case: Lambda
+* Permissions: SQS_Send_Message_Policy
 
 
 
