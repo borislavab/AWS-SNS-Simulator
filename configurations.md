@@ -52,6 +52,17 @@ Subscriptions - map of the following shape:
 * Role name: Lambda_Manage_SNS_Subscriptions_Role
 * Code: subscription_deletion_lambda.py
 
+### SNSSendEmail function
+
+* Runtime: Python 3.8
+* Role name: Lambda_Send_Subscription_Emails_Role
+* Code: send_email_lambda.py
+* Environment variables:
+    * EMAIL_SENDER (Name <some-email@example.com>)
+    * EMAIL_SERVER_REGION (valid AWS region name)
+* Helper environment variables: (For testing with the aws account)
+    * SENDER_ACCESS_KEY
+    * SENDER_SECRET_ACCESS_KEY
 
 ## Policies
 
@@ -150,6 +161,28 @@ Subscriptions - map of the following shape:
     * table: SNS_Subscriptions table ARN
     * index: any
 
+### SES_Send_Emails_Policy
+
+* Name: SES_Send_Emails_Policy
+* Description: Allows principal to send emails
+* Service: SES
+* Action: SendEmail
+* Resources: All resources
+* JSON:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ses:SendEmail",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 ## Roles
 
 ### Lambda_Add_SNS_Topic_Role
@@ -169,5 +202,18 @@ Subscriptions - map of the following shape:
 * Description: Allows lambda to modify SNS_Subscription items, which logically represent SNS subscriptions to a certain SNS topic
 * Use case: Lambda
 * Permissions: SNS_Subscriptions_Update_Topic_Policy
+
+### Lambda_Read_Topic_Subscriptions_Role
+* Name: Lambda_Read_Topic_Subscriptions_Role
+* Description: Allows lambda to get items from the SNS_Subscription table, which logically represent SNS subscriptions to a certain SNS topic
+* Use case: Lambda
+* Permissions: SNS_Subscriptions_Get_Topic_Policy
+
+### Lambda_Send_Subscription_Emails_Role
+* Name: Lambda_Read_Topic_Subscriptions_Role
+* Description: Allows lambda to send emails
+* Use case: Lambda
+* Permissions: SES_Send_Emails_Policy
+
 
 
