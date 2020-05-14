@@ -9,9 +9,7 @@ dummySubscriber = 'Dummy Subscriber'
 
 def lambda_handler(event, context):
     topic = event['topic']
-    message = None
-    if message in event:
-        message = event['message']
+    parameters = event['parameters']
         
     response = table.get_item(
         Key={ 'topic': topic },
@@ -33,25 +31,24 @@ def lambda_handler(event, context):
     
     failedAttempts = []
     
-    invoke_message_sending_lambda(invoke_email_sending_lambda, failedAttempts, message, email_subscribers)
-    invoke_message_sending_lambda(invoke_sqs_message_sending_lambda, failedAttempts, message, sqs_subscribers)
-    invoke_message_sending_lambda(invoke_lambda_invoking_lambda, failedAttempts, message, lambda_subscribers)
+    invoke_message_sending_lambda(invoke_email_sending_lambda, failedAttempts, parameters, email_subscribers)
+    invoke_message_sending_lambda(invoke_sqs_message_sending_lambda, failedAttempts, parameters, sqs_subscribers)
+    invoke_message_sending_lambda(invoke_lambda_invoking_lambda, failedAttempts, parameters, lambda_subscribers)
     
     if len(failedAttempts) > 0:
         raise Exception({'errorMessage': 'Some messages failed to deliver!', 'failedAttempts': failedAttempts})
         
-def invoke_message_sending_lambda(message_sending_lambda, failedAttempts, message, subscribers):
+def invoke_message_sending_lambda(message_sending_lambda, failedAttempts, parameters, subscribers):
     if len(subscribers) > 0:
-        lambda_parameters = construct_lambda_parameters(message, subscribers)
+        lambda_parameters = construct_lambda_parameters(parameters, subscribers)
         try:
             message_sending_lambda(lambda_parameters)
         except Exception as e:
             failedAttempts.append({'error': e})
 
-def construct_lambda_parameters(message, subscribers):
+def construct_lambda_parameters(parameters, subscribers):
     lambda_parameters = {'subscribers': list(subscribers)}
-    if message is not None:
-        lambda_parameters.update(message)
+    lambda_parameters.update(parameters)
     return lambda_parameters
             
 def invoke_email_sending_lambda(lambda_parameters):

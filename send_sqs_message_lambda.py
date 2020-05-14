@@ -6,7 +6,7 @@ client = boto3.client('sqs')
 
 def lambda_handler(event, context):
     sqsUrls = event['subscribers']
-    message_body = event['message-body']
+    message_body = event['message']
     delay_seconds = 0
     if 'delay-seconds' in event:
         delay_seconds = event['delay-seconds']

@@ -11,8 +11,13 @@ sender_secret_access_key = os.environ['SENDER_SECRET_ACCESS_KEY']
 
 def lambda_handler(event, context):
     recipientList = event['subscribers']
-    subject = event['subject']
+    user_message = event['message']
+    if 'subject' not in user_message:
+        raise Exception({'errorMessage': 'Cannot send emails without a subject!'})
+    subject = user_message['subject']
     body_text = None
+    if 'body' in user_message:
+        body_text = user_message['body']
     if 'body-text' in event:
         body_text = event['body-text']
     body_html = None

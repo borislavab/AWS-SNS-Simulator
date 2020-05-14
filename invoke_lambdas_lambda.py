@@ -6,7 +6,7 @@ client = boto3.client('lambda')
 
 def lambda_handler(event, context):
     lambdas = event['subscribers']
-    payload = None
+    payload = event['message']
     if 'payload' in event:
         payload = event['payload']
     context = None
