@@ -10,7 +10,7 @@ sender_access_key = os.environ['SENDER_ACCESS_KEY']
 sender_secret_access_key = os.environ['SENDER_SECRET_ACCESS_KEY']
 
 def lambda_handler(event, context):
-    recipientList = event['email-subscribers']
+    recipientList = event['subscribers']
     subject = event['subject']
     body_text = None
     if 'body-text' in event:

@@ -76,6 +76,12 @@ Subscriptions - map of the following shape:
 * Role name: Lambda_Invoke_Lambda_Role
 * Code: [invoke_lambdas_lambda.py](invoke_lambdas_lambda.py)
 
+### SendMessageToSNSTopic function
+
+* Runtime: Python 3.8
+* Role name: Lambda_Send_Messages_For_Topic_Role
+* Code: [send_message_to_topic_lambda.py](send_message_to_topic_lambda.py)
+
 ## Policies
 
 ### SNS_Subscriptions_Add_Topic_Policy
@@ -237,6 +243,17 @@ Subscriptions - map of the following shape:
 }
 ```
 
+### Invoke_Message_Sending_Lambdas_Policy
+* Name: Invoke_Message_Sending_Lambdas_Policy
+* Description: Allows principal to invoke the lambdas which send messages for each type of subscription entity supported
+* Service: Lambda
+* Action: InvokeFunction
+* Resources: Specific: 
+    * The ARN of SNSSendEmail lambda
+    * The ARN of SNSSendSQSMessage lambda
+    * The ARN of SNSInvokeLambdas lambda
+* JSON:
+
 ## Roles
 
 ### Lambda_Add_SNS_Topic_Role
@@ -280,6 +297,12 @@ Subscriptions - map of the following shape:
 * Description: Allows lambda to invoke lambdas
 * Use case: Lambda
 * Permissions: Lambda_Invoke_Policy
+
+### Lambda_Send_Messages_For_Topic_Role
+* Name: Lambda_Send_Messages_For_Topic_Role
+* Description: Allows lambda to read subscriptions for a certain topic from the SNS_Subscriptions table and in turn invoke the lambdas which send messages for each type of subscription entity supported
+* Use case: Lambda
+* Permissions: SNS_Subscriptions_Get_Topic_Policy, Invoke_Message_Sending_Lambdas_Policy
 
 
 

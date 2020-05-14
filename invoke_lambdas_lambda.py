@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 client = boto3.client('lambda')
 
 def lambda_handler(event, context):
-    lambdas = event['lambda-subscribers']
+    lambdas = event['subscribers']
     payload = None
     if 'payload' in event:
         payload = event['payload']

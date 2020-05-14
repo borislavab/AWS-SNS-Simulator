@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 client = boto3.client('sqs')
 
 def lambda_handler(event, context):
-    sqsUrls = event['sqs-subscribers']
+    sqsUrls = event['subscribers']
     message_body = event['message-body']
     delay_seconds = 0
     if 'delay-seconds' in event:
