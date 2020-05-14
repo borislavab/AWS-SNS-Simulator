@@ -32,31 +32,31 @@ Subscriptions - map of the following shape:
 
 * Runtime: Python 3.8
 * Role name: Lambda_Add_SNS_Topic_Role
-* Code: topic_creation_lambda.py
+* Code: [topic_creation_lambda.py](topic_creation_lambda.py)
 
 ### DeleteSNSTopic function
 
 * Runtime: Python 3.8
 * Role name: Lambda_Delete_SNS_Topic_Role
-* Code: topic_deletion_lambda.py
+* Code: [topic_deletion_lambda.py](topic_deletion_lambda.py)
 
 ### SubscribeToSNSTopic function
 
 * Runtime: Python 3.8
 * Role name: Lambda_Manage_SNS_Subscriptions_Role
-* Code: subscription_creation_lambda.py
+* Code: [subscription_creation_lambda.py](subscription_creation_lambda.py)
 
 ### UnsubscribeFromSNSTopic function
 
 * Runtime: Python 3.8
 * Role name: Lambda_Manage_SNS_Subscriptions_Role
-* Code: subscription_deletion_lambda.py
+* Code: [subscription_deletion_lambda.py](subscription_deletion_lambda.py)
 
 ### SNSSendEmail function
 
 * Runtime: Python 3.8
 * Role name: Lambda_Send_Subscription_Emails_Role
-* Code: send_email_lambda.py
+* Code: [send_email_lambda.py](send_email_lambda.py)
 * Environment variables:
     * EMAIL_SENDER (Name <some-email@example.com>)
     * EMAIL_SERVER_REGION (valid AWS region name)
@@ -68,7 +68,7 @@ Subscriptions - map of the following shape:
 
 * Runtime: Python 3.8
 * Role name: Lambda_Send_SQS_Message_Role
-* Code: send_sqs_message_lambda.py
+* Code: [send_sqs_message_lambda.py](send_sqs_message_lambda.py)
 
 ### SNSInvokeLambdas function
 
@@ -81,6 +81,12 @@ Subscriptions - map of the following shape:
 * Runtime: Python 3.8
 * Role name: Lambda_Send_Messages_For_Topic_Role
 * Code: [send_message_to_topic_lambda.py](send_message_to_topic_lambda.py)
+
+### SNSMakeHTTPRequest function
+
+* Runtime: Python 3.8
+* Role name: Lambda_Empty_Role
+* Code: [make_http_request_lambda.py](make_http_request_lambda.py)
 
 ## Policies
 
@@ -304,5 +310,9 @@ Subscriptions - map of the following shape:
 * Use case: Lambda
 * Permissions: SNS_Subscriptions_Get_Topic_Policy, Invoke_Message_Sending_Lambdas_Policy
 
-
+### Lambda_Empty_Role
+* Name: Lambda_Empty_Role
+* Description: Denies lambda access to any resources
+* Use case: Lambda
+* Permissions: None
 
