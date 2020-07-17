@@ -24,16 +24,19 @@ def lambda_handler(event, context):
     email_subscribers = item['email_subscribers']
     sqs_subscribers = item['sqs_subscribers']
     lambda_subscribers = item['lambda_subscribers']
+    http_subscribers = item['http_subscribers']
     
     email_subscribers.remove(dummySubscriber)
     sqs_subscribers.remove(dummySubscriber)
     lambda_subscribers.remove(dummySubscriber)
+    http_subscribers.remove(dummySubscriber)
     
     failedAttempts = []
     
     invoke_message_sending_lambda(invoke_email_sending_lambda, failedAttempts, parameters, email_subscribers)
     invoke_message_sending_lambda(invoke_sqs_message_sending_lambda, failedAttempts, parameters, sqs_subscribers)
     invoke_message_sending_lambda(invoke_lambda_invoking_lambda, failedAttempts, parameters, lambda_subscribers)
+    invoke_message_sending_lambda(invoke_http_requesting_lambda, failedAttempts, parameters, http_subscribers)
     
     if len(failedAttempts) > 0:
         raise Exception({'errorMessage': 'Some messages failed to deliver!', 'failedAttempts': failedAttempts})
@@ -70,8 +73,17 @@ def invoke_sqs_message_sending_lambda(lambda_parameters):
     )
 
 def invoke_lambda_invoking_lambda(lambda_parameters):
+    print(json.dumps(lambda_parameters))
     lambda_client.invoke(
         FunctionName='SNSInvokeLambdas',
+        InvocationType='Event',
+        LogType='None',
+        Payload=json.dumps(lambda_parameters)
+    )
+
+def invoke_http_requesting_lambda(lambda_parameters):
+    lambda_client.invoke(
+        FunctionName='SNSMakeHTTPRequest',
         InvocationType='Event',
         LogType='None',
         ClientContext='{}',

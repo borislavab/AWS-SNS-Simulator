@@ -1,0 +1,19 @@
+@startuml
+'Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+'SPDX-License-Identifier: MIT (For details, see https://github.com/awslabs/aws-icons-for-plantuml/blob/master/LICENSE)
+
+!include <awslib/AWSCommon>
+
+!include <awslib/General/User>
+!include <awslib/Compute/Lambda>
+!include <awslib/Database/DynamoDB>
+
+Left to right direction
+
+User(topicCreator, "User", "Wants new topic")
+Lambda(topicCreationLambda, "CreateSNSTopic", "Creates the topic")
+DynamoDB(topicsTable, "SNS_Subscriptions", "Adds a new entry for topic")
+
+topicCreator --> topicCreationLambda
+topicCreationLambda --> topicsTable
+@enduml

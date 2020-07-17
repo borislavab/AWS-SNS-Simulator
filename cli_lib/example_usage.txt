@@ -1,0 +1,12 @@
+
+python.exe .\sns_simulator_lib_cli.py create-topic --topic example-topic
+
+python.exe .\sns_simulator_lib_cli.py subscribe --topic example-topic --subscription-type Email --subscriber-id <verified_email>
+python.exe .\sns_simulator_lib_cli.py subscribe --topic example-topic --subscription-type SQS --subscriber-id <SQS_URL>
+
+python.exe .\sns_simulator_lib_cli.py send-message --topic example-topic --message "test message"
+python.exe .\sns_simulator_lib_cli.py send-message --topic example-topic --message "test.json" --message-type path-to-file
+python.exe .\sns_simulator_lib_cli.py send-message --topic example-topic --message "test.json" --message-type path-to-json
+
+python.exe .\sns_simulator_lib_cli.py unsubscribe --topic example-topic --subscription-type Email --subscriber-id <subscribed_email>
+python.exe .\sns_simulator_lib_cli.py delete-topic --topic example-topic

@@ -1,0 +1,26 @@
+@startuml
+'Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+'SPDX-License-Identifier: MIT (For details, see https://github.com/awslabs/aws-icons-for-plantuml/blob/master/LICENSE)
+
+!include <awslib/AWSCommon>
+
+!include <awslib/General/User>
+!include <awslib/Compute/Lambda>
+!include <awslib/Database/DynamoDB>
+
+User(messageSender, "User", "Wants to send message for topic")
+Lambda(mainSender, "SendMessageToSNSTopic", "Sends all messages")
+DynamoDB(topicsTable, "SNS_Subscriptions", "Contains subscribers to topic")
+Lambda(emailSender, "SNSSendEmail", "Sends emails")
+Lambda(sqsSender, "SNSSendSQSMessage", "Sends SQS messages")
+Lambda(lambdaSender, "SNSInvokeLambdas", "Invokes lambdas")
+Lambda(httpSender, "SNSMakeHTTPRequest", "Makes HTTP requests")
+
+
+messageSender --> mainSender
+mainSender --> topicsTable
+mainSender --> emailSender
+mainSender --> sqsSender
+mainSender --> lambdaSender
+mainSender --> httpSender
+@enduml

@@ -258,6 +258,7 @@ Subscriptions - map of the following shape:
     * The ARN of SNSSendEmail lambda
     * The ARN of SNSSendSQSMessage lambda
     * The ARN of SNSInvokeLambdas lambda
+    * The ARN of SNSMakeHTTPRequest lambda
 * JSON:
 
 ## Roles

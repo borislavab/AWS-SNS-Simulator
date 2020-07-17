@@ -60,7 +60,7 @@ def constructMessage(sqsUrl,
                 message_group_id):
     message = {
         'QueueUrl': sqsUrl,
-        'MessageBody': message_body
+        'MessageBody': json.dumps(message_body)
     }
     if delay_seconds > 0:
         message.update({'DelaySeconds': delay_seconds})

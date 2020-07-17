@@ -9,38 +9,40 @@ def lambda_handler(event, context):
     payload = event['message']
     if 'payload' in event:
         payload = event['payload']
-    context = None
-    if 'context' in event:
-        context = event['context']
+    client_context = None
+    if 'client-context' in event:
+        client_context = event['client-context']
     qualifier = None
     if 'qualifier' in event:
         qualifier = event['qualifier']
+    print(payload)
         
     failedAttempts = []
         
     for lambda_name in lambdas:
         try:
-            invoke_lambda_async(lambda_name, payload, context, qualifier)
+            invoke_lambda_async(lambda_name, payload, client_context, qualifier)
         except ClientError as e:
             failedAttempts.append({'lambda_name': lambda_name, 'error': e})
             
     if len(failedAttempts) > 0:
         raise Exception({'errorMessage': 'Could not invoke all lambdas!', 'failedAttempts': failedAttempts})
 
-def invoke_lambda_async(lambda_name, payload, context, qualifier):
-    invocation = construct_invocation(lambda_name, payload, context, qualifier)
+def invoke_lambda_async(lambda_name, payload, client_context, qualifier):
+    invocation = construct_invocation(lambda_name, payload, client_context, qualifier)
+    print(invocation)
     client.invoke(**invocation)
     
-def construct_invocation(lambda_name, payload, context, qualifier):
+def construct_invocation(lambda_name, payload, client_context, qualifier):
     invocation = {
         'FunctionName': lambda_name,
         'InvocationType': 'Event',
         'LogType': 'None'
     }
-    if context is not None:
-        invocation.update({'ClientContext': context})
+    if client_context is not None:
+        invocation.update({'ClientContext': client_context})
     if payload is not None:
-        invocation.update({'Payload': payload})
+        invocation.update({'Payload': json.dumps(payload)})
     if qualifier is not None:
         invocation.update({'Qualifier': qualifier})
     return invocation
