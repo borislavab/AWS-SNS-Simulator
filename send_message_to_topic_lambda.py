@@ -73,7 +73,6 @@ def invoke_sqs_message_sending_lambda(lambda_parameters):
     )
 
 def invoke_lambda_invoking_lambda(lambda_parameters):
-    print(json.dumps(lambda_parameters))
     lambda_client.invoke(
         FunctionName='SNSInvokeLambdas',
         InvocationType='Event',

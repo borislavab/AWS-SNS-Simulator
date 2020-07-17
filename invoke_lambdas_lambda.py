@@ -15,7 +15,6 @@ def lambda_handler(event, context):
     qualifier = None
     if 'qualifier' in event:
         qualifier = event['qualifier']
-    print(payload)
         
     failedAttempts = []
         
@@ -30,7 +29,6 @@ def lambda_handler(event, context):
 
 def invoke_lambda_async(lambda_name, payload, client_context, qualifier):
     invocation = construct_invocation(lambda_name, payload, client_context, qualifier)
-    print(invocation)
     client.invoke(**invocation)
     
 def construct_invocation(lambda_name, payload, client_context, qualifier):
